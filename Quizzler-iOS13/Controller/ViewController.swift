@@ -39,7 +39,6 @@ class ViewController: UIViewController {
     
     
     @IBAction func answerPressedButton(_ sender: UIButton) {
-        updateUI()
         
         if sender.currentTitle == quiz[questionNumber].answer{
             sender.backgroundColor = UIColor.green
@@ -47,9 +46,11 @@ class ViewController: UIViewController {
         else{
             sender.backgroundColor = UIColor.red
         }
+        
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
     }
     
-    func updateUI() {
+    @objc func updateUI() {
         if questionNumber < quiz.count - 1 {
             questionNumber += 1
             questionLabel.text = quiz[questionNumber].question
