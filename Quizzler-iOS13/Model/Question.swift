@@ -9,10 +9,13 @@
 import UIKit
 
 struct Question {
-    init(q: String, a : String) {
+    init(q: String, a : [String], correctAnswer: String) {
         self.question = q
-        self.answer = a
+        self.choices = a
+        self.answer = correctAnswer
     }
-     var question: String
-     var answer: String
+    
+    var question: String
+    var choices: [String]
+    var answer: String
 }

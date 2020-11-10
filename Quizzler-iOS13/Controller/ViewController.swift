@@ -11,8 +11,9 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
+    @IBOutlet weak var firstChoiceButton: UIButton!
+    @IBOutlet weak var secondChoiceButton: UIButton!
+    @IBOutlet weak var lastChoiceButton: UIButton!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var scoreLabel: UILabel!
     
@@ -21,8 +22,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         progressBar.progress = 0.0
-        questionLabel.text = quizBrain.quiz[quizBrain.questionNumber].question
+        questionLabel.text = quizBrain.getQuestion()
         scoreLabel.text = "Score: 0"
+        firstChoiceButton.setTitle(quizBrain.getChoice(0), for: .normal)
+        secondChoiceButton.setTitle(quizBrain.getChoice(1), for: .normal)
+        lastChoiceButton.setTitle(quizBrain.getChoice(2), for: .normal)
     }
     
     
@@ -36,17 +40,30 @@ class ViewController: UIViewController {
             sender.backgroundColor = UIColor.red
         }
         
+        if quizBrain.questionNumber + 1 < quizBrain.quiz.count {
+            quizBrain.questionNumber += 1
+        }
+        else {
+            quizBrain.resetUI()
+            progressBar.progress = 0.0
+        }
+        
         Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
     }
     
     @objc func updateUI() {
-        if quizBrain.questionNumber < quizBrain.quiz.count - 1 {
-            quizBrain.questionNumber += 1
-            questionLabel.text = quizBrain.getQuestion()
-            progressBar.progress = quizBrain.getProgress()
-        }
-        trueButton.backgroundColor = UIColor.clear
-        falseButton.backgroundColor = UIColor.clear
+        
+        questionLabel.text = quizBrain.getQuestion()
+        
+        firstChoiceButton.setTitle(quizBrain.getChoice(0), for: .normal)
+        secondChoiceButton.setTitle(quizBrain.getChoice(1), for: .normal)
+        lastChoiceButton.setTitle(quizBrain.getChoice(2), for: .normal)
+        
+        progressBar.progress = quizBrain.getProgress()
+        
+        firstChoiceButton.backgroundColor = UIColor.clear
+        secondChoiceButton.backgroundColor = UIColor.clear
+        lastChoiceButton.backgroundColor = UIColor.clear
     }
     
 }
